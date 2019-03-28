@@ -1,6 +1,7 @@
 package cn.itrip.auth.service.impl;
 
 import cn.itrip.auth.service.MailService;
+import cn.itrip.auth.service.SmsService;
 import cn.itrip.auth.service.UserService;
 import cn.itrip.beans.pojo.User;
 import cn.itrip.common.MD5;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private RedisAPI redisAPI;
+
+    @Resource
+    private SmsService smsService;
 
     @Override
     public void insertUser(User user) throws Exception {
@@ -82,6 +86,39 @@ public class UserServiceImpl implements UserService {
         } else {
             return false;
         }
+
+    }
+
+    @Override
+    public void insertUserByPhone(User user) throws Exception {
+        //1、创建用户
+        userMapper.insert(user);
+        //2、生成验证码(1111-9999)
+        int code = MD5.getRandomCode();
+        //3、发送验证码，  “1”为默认模板id的值。
+        smsService.sendMsg(user.getUsercode(), "1", new String[] {String.valueOf(code), "1"});
+        //4、缓存验证码到Redis数据库中， 有效期为60秒，测试时可以设置大一点。
+        redisAPI.set("activation:" + user.getUsercode(), 60, String.valueOf(code));
+
+    }
+
+    @Override
+    public boolean validatePhone(String phoneNum, String code) throws Exception {
+        //1、对比验证码
+        String key = "activation:" + phoneNum;
+        String value = redisAPI.get(key);
+        if (value != null && value.equals(code)) {
+            User user = findByUsername(phoneNum);
+            if (user != null) {
+                //2、更新用户激活状态
+                user.setActivated(1);  //表示激活
+                user.setFlatid(user.getId()); //设置平台ID
+                user.setUsertype(0);
+                userMapper.updateByPrimaryKey(user);
+                return true;
+            }
+        }
+        return false;
 
     }
 }

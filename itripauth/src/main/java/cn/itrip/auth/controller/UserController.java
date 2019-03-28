@@ -87,4 +87,66 @@ public class UserController {
         }
     }
 
+    /**
+     * 使用手机注册
+     * @param userVO
+     */
+    @ApiOperation(value="使用手机注册",httpMethod = "POST",
+            protocols = "HTTP",  response = Dto.class,notes="使用手机注册 ")
+    @RequestMapping(value="/doRegisterByPhone",method= RequestMethod.POST)
+    @ResponseBody
+    public  Dto doRegisterByPhone(@RequestBody ItripUserVO userVO) {
+        //1、手机号格式验证
+        if (!this.validPhone(userVO.getUserCode())) {
+            return DtoUtil.returnFail("请使用正确的手机号码！",ErrorCode.AUTH_ILLEGAL_USERCODE);
+        }
+        //2、调用Service层新增用户的方法
+        try {
+            User user=new User();
+            user.setUsercode(userVO.getUserCode());
+            user.setUserpassword(userVO.getUserPassword());
+            user.setUsertype(0);
+            user.setUsername(userVO.getUserName());
+            if (null == userService.findByUsername(user.getUsercode())) {
+                user.setUserpassword(MD5.getMd5(user.getUserpassword(), 32));
+                userService.insertUserByPhone(user);
+                return DtoUtil.returnSuccess();
+            } else {
+                return DtoUtil.returnFail("用户已存在，注册失败", ErrorCode.AUTH_USER_ALREADY_EXISTS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return DtoUtil.returnFail(e.getMessage(), ErrorCode.AUTH_UNKNOWN);
+        }
+    }
+
+    /**
+     * 验证手机号码的格式是否正确
+     * @param phone 手机号码
+     * @return 返回true表示手机号码验证通过。否则返回false
+     */
+    public boolean validPhone(String phone) {
+        String regex = "^1[3578]{1}\\d{9}$";
+        return Pattern.compile(regex).matcher(phone).find();
+    }
+
+    @ApiOperation(value="手机注册用户激活",httpMethod = "PUT",
+            protocols = "HTTP",  response = Dto.class,notes="手机注册用户激活")
+    @RequestMapping(value="/activateByPhone",method=RequestMethod.PUT)
+    @ResponseBody
+    public Dto activateByPhone(
+            @ApiParam(name="user",value="手机号码")@RequestParam String user,
+            @ApiParam(name="code",value="激活码")  @RequestParam String code){
+        try {
+            if(userService.validatePhone(user, code)) {
+                return DtoUtil.returnSuccess("激活成功");
+            }else{
+                return DtoUtil.returnSuccess("激活失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return DtoUtil.returnFail("激活失败", ErrorCode.AUTH_ACTIVATE_FAILED);
+        }
+    }
+
 }
