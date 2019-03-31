@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         //2、生成激活码， new Date().toLocaleString()生成日期和时间，
         //格式如：2019-1-25 22:56:32，然后进行32位的MD5加密
         String activationCode = MD5.getMd5(new Date().toLocaleString(), 32);
-
+        System.out.println(activationCode);
         //3、发送邮件
         mailService.sendActivationMail(user.getUsercode(),activationCode);
         //4、激活码存入Redis中

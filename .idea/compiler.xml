@@ -6,17 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="itripauth" />
-        <module name="itripbeans" />
+        <module name="itriputils" />
         <module name="itripbiz" />
         <module name="itripdao" />
-        <module name="itripsearch" />
         <module name="itriptrade" />
-        <module name="itriputils" />
+        <module name="itripbeans" />
+        <module name="itripsearch" />
+        <module name="itripauth" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="itripsearch" target="1.7" />
-    </bytecodeTargetLevel>
   </component>
 </project>
