@@ -16,6 +16,7 @@ import java.util.Map;
 public class WxLoginController {
 
     private Logger logger = Logger.getLogger(WxLoginController.class);
+
     @RequestMapping("/callBack")
     public void callBack(@RequestParam String code, @RequestParam String state, HttpServletResponse response) throws IOException {
         System.out.println(code);
