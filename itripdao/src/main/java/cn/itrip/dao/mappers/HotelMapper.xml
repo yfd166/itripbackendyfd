@@ -372,4 +372,5 @@
       modifiedBy = #{modifiedby,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>
