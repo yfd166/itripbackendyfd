@@ -1,6 +1,10 @@
 package cn.itrip.dao;
 
 import cn.itrip.beans.pojo.HotelRoom;
+import cn.itrip.beans.vo.hotelroom.ItripHotelRoomVO;
+
+import java.util.List;
+import java.util.Map;
 
 public interface HotelRoomMapper {
     /**
@@ -50,4 +54,7 @@ public interface HotelRoomMapper {
      * @mbggenerated Mon Mar 25 09:29:58 CST 2019
      */
     int updateByPrimaryKey(HotelRoom record);
+
+
+    List<ItripHotelRoomVO> getItripHotelRoomListByMap(Map<String, Object> param)throws Exception;
 }

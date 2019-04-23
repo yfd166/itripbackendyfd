@@ -9,6 +9,7 @@ import cn.itrip.common.DtoUtil;
 import cn.itrip.common.EmptyUtils;
 import cn.itrip.common.ErrorCode;
 import cn.itrip.common.MD5;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,9 @@ import java.util.Calendar;
 @Controller
 @RequestMapping("/api")
 public class LoginController {
+
+    private static final Logger LOG = Logger.getLogger(LoginController.class);
+
     @Resource
     private TokenService tokenService;
 
@@ -30,7 +34,7 @@ public class LoginController {
 
     @RequestMapping(value = "/dologin" , method = RequestMethod.POST)
     @ResponseBody
-    public Dto login(@RequestParam String name, @RequestParam String password, HttpServletRequest request) {
+    public Dto login(@RequestParam String name,@RequestParam String password, HttpServletRequest request) {
         try {
             User user = userService.login(name, MD5.getMd5(password, 32));
             if (EmptyUtils.isNotEmpty(user)) { //如果用户对象不为空。
@@ -47,6 +51,7 @@ public class LoginController {
                 //表示从1790-1-1 00:00:00到当前时间总共经过的时间的毫秒数。
                 //Dto中的字段与Token的数据结构一致。
                 return DtoUtil.returnDataSuccess(vo);
+                //return DtoUtil.returnSuccess("成功！","200");
             } else {
                 return DtoUtil.returnFail("用户密码不正确，请确认后再输入！", ErrorCode.AUTH_AUTHENTICATION_FAILED);
             }

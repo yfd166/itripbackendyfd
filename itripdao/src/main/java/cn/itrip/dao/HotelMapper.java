@@ -1,7 +1,14 @@
 package cn.itrip.dao;
 
+import cn.itrip.beans.pojo.AreaDic;
 import cn.itrip.beans.pojo.Hotel;
 import cn.itrip.beans.pojo.HotelWithBLOBs;
+import cn.itrip.beans.pojo.LabelDic;
+import cn.itrip.beans.vo.hotel.ItripSearchFacilitiesHotelVO;
+import cn.itrip.beans.vo.hotel.ItripSearchPolicyHotelVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface HotelMapper {
     /**
@@ -59,4 +66,26 @@ public interface HotelMapper {
      * @mbggenerated Mon Mar 25 09:29:58 CST 2019
      */
     int updateByPrimaryKey(Hotel record);
+
+    /**
+     *  根据酒店ID获取特色
+     * @param id 酒店ID
+     */
+    List<LabelDic> getHotelFeatureByHotelId(@Param(value = "id") Long id)throws Exception;
+
+    /**
+     *  根据酒店ID获取商圈
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    List<AreaDic> getHotelAreaByHotelId(@Param(value = "id") Long id)throws Exception;
+
+    Hotel getItripHotelById(@Param(value = "id") Long id)throws Exception;
+
+    ItripSearchFacilitiesHotelVO getItripHotelFacilitiesById(@Param(value = "id") Long id) throws Exception;
+
+    ItripSearchPolicyHotelVO queryHotelPolicy(@Param(value = "id") Long id) throws Exception;
+
+
 }

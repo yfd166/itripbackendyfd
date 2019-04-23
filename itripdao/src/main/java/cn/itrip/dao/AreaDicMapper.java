@@ -1,6 +1,11 @@
 package cn.itrip.dao;
 
 import cn.itrip.beans.pojo.AreaDic;
+import cn.itrip.beans.pojo.LabelDic;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface AreaDicMapper {
     /**
@@ -50,4 +55,9 @@ public interface AreaDicMapper {
      * @mbggenerated Mon Mar 25 09:29:58 CST 2019
      */
     int updateByPrimaryKey(AreaDic record);
+
+    List<AreaDic> getItripAreaDicListByMap(Map<String, Object> param);
+
+
+
 }

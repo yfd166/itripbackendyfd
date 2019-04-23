@@ -1,6 +1,10 @@
 package cn.itrip.dao;
 
 import cn.itrip.beans.pojo.Image;
+import cn.itrip.beans.vo.ItripImageVO;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ImageMapper {
     /**
@@ -50,4 +54,6 @@ public interface ImageMapper {
      * @mbggenerated Mon Mar 25 09:29:58 CST 2019
      */
     int updateByPrimaryKey(Image record);
+
+    List<ItripImageVO> getItripImageListByMap(Map<String, Object> param)throws Exception;
 }

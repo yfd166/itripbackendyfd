@@ -1,6 +1,7 @@
 package cn.itrip.dao;
 
 import cn.itrip.beans.pojo.HotelOrder;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,8 @@ public interface HotelOrderMapper {
 
     //通过条件查询【爱旅行项目的酒店订单列表】
     List<HotelOrder> getItripHotelOrderListByMap(Map<String, Object> param)throws Exception;
+
+    Integer updateHotelOrderStatus(@Param(value = "id")Long id, @Param(value = "modifiedBy")Long modifiedBy) throws Exception;
 
 
 }

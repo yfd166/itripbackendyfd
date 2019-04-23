@@ -1,6 +1,12 @@
 package cn.itrip.dao;
 
 import cn.itrip.beans.pojo.Comment;
+import cn.itrip.beans.vo.comment.ItripListCommentVO;
+import cn.itrip.beans.vo.comment.ItripScoreCommentVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface CommentMapper {
     /**
@@ -58,4 +64,14 @@ public interface CommentMapper {
      * @mbggenerated Mon Mar 25 09:29:58 CST 2019
      */
     int updateByPrimaryKey(Comment record);
+
+
+    ItripScoreCommentVO getCommentAvgScore(@Param(value = "hotelId") Long hotelId) throws Exception;
+
+
+    Integer getItripCommentCountByMap(Map<String, Object> param)throws Exception;
+
+    List<ItripListCommentVO> getItripCommentListByMap(Map<String, Object> param)throws Exception;
+
+    Long insertItripComment(Comment itripComment)throws Exception;
 }

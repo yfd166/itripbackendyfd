@@ -587,4 +587,15 @@
       limit #{beginPos},#{pageSize}
     </if>
   </select>
+
+  <update id="updateHotelOrderStatus" parameterType="Long">
+    update itrip_hotel_order
+    set orderStatus = 4,
+    modifyDate = NOW()
+    <if test="modifiedBy != null and modifiedBy!=''">
+      ,modifiedBy=#{modifiedBy}
+    </if>
+    where id=#{id}
+  </update>
+
 </mapper>
